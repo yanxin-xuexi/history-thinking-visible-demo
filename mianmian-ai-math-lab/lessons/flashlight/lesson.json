@@ -1,0 +1,79 @@
+{
+  "id": "flashlight-word-problem",
+  "revision": "1.0.1-public",
+  "title": "防水手电筒：算出的钱属于谁？",
+  "media": "lesson.mp4",
+  "duration": 211.349,
+  "problem": "某黄河沿岸社区划拨560元采购防汛物资，购置6件救生衣，每件60元，余下的钱刚好买4个防水手电筒，每个防水手电筒多少元？先分析数量关系，把下图补充完整，再列出综合算式。\n本互动讲解中会完整展示并解释原关系图。",
+  "checkpoints": [
+    {
+      "id": "q-vests",
+      "problem_id": "flashlight-question-1",
+      "kind": "reasoning",
+      "at": 24.45,
+      "exposure": "after_problem_reading",
+      "prompt": "60×6 算出的是谁的钱？",
+      "options": [
+        "6件救生衣一共的钱",
+        "每个手电筒的钱",
+        "买完救生衣后剩下的钱"
+      ],
+      "answer": 0,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "你把每件60元和6件对应起来了。接着看这笔总价怎样算。",
+        "wrong": [
+          "",
+          "60元对应救生衣，不是手电筒。再看两个数分别表示什么。",
+          "这里做的是乘法；剩下的钱还需要用总预算减去支出。"
+        ]
+      }
+    },
+    {
+      "id": "q-one",
+      "problem_id": "flashlight-question-2",
+      "kind": "reasoning",
+      "at": 53.45,
+      "exposure": "after_total_price_explanation",
+      "prompt": "200元刚好买4个同样的手电筒。200÷4 求的是哪一个量？",
+      "options": [
+        "4个手电筒一共的钱",
+        "每个手电筒的钱",
+        "买完后剩下的钱"
+      ],
+      "answer": 1,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "这里把4个的总价平均分成4份，每份对应一个。继续用小例子看清楚。",
+        "wrong": [
+          "200元本来就是4个一共的钱。除以4以后，观察平均分出的一份对应几个。",
+          "",
+          "这200元刚好全部用于购买，不是在求买完后的余钱。"
+        ]
+      }
+    },
+    {
+      "id": "q-transfer",
+      "problem_id": "flashlight-question-3",
+      "kind": "transfer",
+      "at": 195.8,
+      "exposure": "after_full_lesson",
+      "prompt": "换成150元买5个同样的手电筒，150÷5 求的是什么？",
+      "options": [
+        "5个一共的价格",
+        "每个的价格",
+        "手电筒的个数"
+      ],
+      "answer": 1,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "你选择了每个的价格。还可以画出5份，并向家长解释每个数表示什么。一次选择本身不能证明独立掌握。",
+        "wrong": [
+          "150已经是5个一共的钱。想一想，平均分成5份后看的是哪一份。",
+          "",
+          "5已经表示个数。这里用总价除以个数，结果应当是一个价格。"
+        ]
+      }
+    }
+  ]
+}

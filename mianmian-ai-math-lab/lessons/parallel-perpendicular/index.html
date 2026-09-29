@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数学互动讲解</title><link rel="icon" href="data:,"><link rel="stylesheet" href="player.css"></head>
+<body><main id="player">
+<header><span>数学 · 先延长，再看角</span><h1 id="title">正在加载课件</h1><p id="notice">本次回答仅保存在当前页面；不会上传。可主动导出交给家长，刷新会清空。</p></header>
+<div class="stage"><video id="video" playsinline preload="metadata" aria-label="讲解视频"></video>
+<section id="panel" hidden tabindex="-1" aria-label="思考与作答"><p id="phase"></p><h2 id="prompt"></h2><div id="choices"></div><p id="feedback" role="status"></p><div id="actions"></div></section></div>
+<nav aria-label="播放控制"><button id="start">开始完整课程</button><button id="toggle">播放 / 暂停</button><button id="original">查看完整题目</button><button id="restart">从头重看</button><button id="full">全屏</button><button id="export">导出本次记录</button><output id="clock">0:00</output></nav>
+<p id="status" role="status"></p><p class="foot">微软“小艺”通用合成旁白，不是孩子本人声音。选择正确不等于已经独立掌握。</p>
+<dialog id="dialog"><h2>完整题目</h2><p id="problem"></p><button id="close">关闭题目</button></dialog>
+<dialog id="export-dialog"><h2>主动导出本次记录</h2><p>文件包含课件版本、作答与提示/讲解情况，不含姓名，不会自动上传。请交给家长确认是谁作答。若由成人测试，请选“测试记录”，不要导入孩子档案。</p><button id="export-learner">导出真实学习记录</button><button id="export-test">导出测试记录</button><button id="export-cancel">取消</button></dialog>
+<audio id="voice" preload="none"></audio></main><script src="player.js"></script></body></html>

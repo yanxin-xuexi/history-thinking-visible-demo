@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第四个“百星”用了多少年？</title>
+  <style>
+    :root {
+      --bg: #071126;
+      --panel: rgba(12, 27, 54, .94);
+      --panel2: #101d37;
+      --fg: #f5f7ff;
+      --muted: #aab8d6;
+      --main: #5b9cff;
+      --accent: #ffd166;
+      --ok: #3ddc97;
+      --sub: #2dd4bf;
+      --warm: #ff7a5c;
+      --purp: #b794f6;
+      --line: rgba(160, 184, 225, .23);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--fg);
+      background:
+        radial-gradient(circle at 15% 6%, rgba(91,156,255,.22), transparent 30%),
+        radial-gradient(circle at 88% 12%, rgba(183,148,246,.16), transparent 25%),
+        var(--bg);
+      font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 26px 18px 52px; }
+    header { text-align: center; margin-bottom: 18px; }
+    .eyebrow { color: var(--sub); font-weight: 750; letter-spacing: .08em; font-size: .82rem; }
+    h1 { margin: 5px 0 7px; font-size: clamp(1.55rem, 5vw, 2.35rem); line-height: 1.2; }
+    header p { margin: 0 auto; max-width: 620px; color: var(--muted); }
+    .stage { max-width: 680px; margin: 0 auto; }
+    .video-card, .interactive-card, .explain {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(0,0,0,.25);
+      overflow: hidden;
+    }
+    .video-card { margin-bottom: 18px; }
+    video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #020817; }
+    .video-note { padding: 10px 14px 12px; color: var(--muted); font-size: .86rem; }
+    .interactive-card { padding: 18px; }
+    .step-title { margin: 0; color: var(--accent); font-size: 1.08rem; }
+    .step-help { margin: 3px 0 14px; color: var(--muted); font-size: .9rem; }
+    canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      max-width: 620px;
+      margin: 0 auto;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #081329;
+    }
+    .controls { margin: 15px auto 0; max-width: 620px; }
+    .controls label { display: block; color: var(--muted); font-size: .92rem; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .ticks { display: flex; justify-content: space-between; color: #7585a6; font-size: .72rem; }
+    .nav { display: flex; gap: 10px; margin-top: 13px; }
+    button {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: var(--fg);
+      background: #152541;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: var(--main); }
+    button:focus-visible { outline: 3px solid rgba(255,209,102,.45); outline-offset: 2px; }
+    button.primary { margin-left: auto; background: #234777; border-color: #3a6da8; }
+    button:disabled { opacity: .4; cursor: default; transform: none; }
+    .readout {
+      margin: 14px auto 0;
+      max-width: 620px;
+      min-height: 90px;
+      padding: 13px 15px;
+      border-radius: 13px;
+      background: var(--panel2);
+      border-left: 4px solid var(--accent);
+    }
+    .equation { color: var(--accent); font-weight: 800; font-size: 1.17rem; }
+    .meaning { margin-top: 4px; color: var(--fg); }
+    .quiz { display: none; margin: 14px auto 0; max-width: 620px; padding: 14px; border: 1px dashed #54698e; border-radius: 13px; }
+    .quiz.show { display: block; }
+    .quiz p { margin: 0 0 10px; font-weight: 700; }
+    .choices { display: grid; gap: 8px; }
+    .feedback { min-height: 26px; margin-top: 9px; color: var(--muted); }
+    .feedback.ok { color: var(--ok); }
+    .feedback.try { color: var(--warm); }
+    .divider { border: 0; border-top: 1px solid var(--line); margin: 27px auto; max-width: 680px; }
+    .explain { max-width: 680px; margin: 0 auto; padding: 20px; }
+    .explain h2 { margin: 0 0 10px; font-size: 1.2rem; }
+    .problem { color: var(--muted); font-size: .93rem; }
+    .formula { margin: 14px 0; padding: 13px 15px; background: #0c1930; border-radius: 12px; color: var(--ok); font-weight: 750; }
+    .source { margin-top: 18px; color: #7f90b2; font-size: .8rem; }
+    @media (max-width: 520px) {
+      .wrap { padding-inline: 12px; }
+      .interactive-card { padding: 12px; }
+      .nav button { flex: 1; padding-inline: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="eyebrow">四年级数学 · 多步实际问题</div>
+      <h1>第四个“百星”用了多少年？</h1>
+      <p>先看视频理解“12年里还有谁”，再亲手把前三个已知阶段依次拿走。</p>
+    </header>
+
+    <section class="stage" aria-label="视频和互动练习">
+      <div class="video-card">
+        <video controls preload="metadata" poster="assets/space-hero.png">
+          <source src="FourthHundredSatellites.mp4" type="video/mp4">
+          你的浏览器暂时无法播放这个视频。
+        </video>
+        <div class="video-note">旁白为通用合成普通话女声“小艺”，不是绵绵本人的声音。</div>
+      </div>
+
+      <div class="interactive-card">
+        <h2 class="step-title">动手拿走已知阶段</h2>
+        <p class="step-help">拖动滑块，观察“当前剩余”到底包含哪些阶段。</p>
+        <canvas id="c" aria-label="四个百星阶段的分步减法图"></canvas>
+
+        <div class="controls">
+          <label for="step">已经拿走几段：<strong id="step-val">0</strong></label>
+          <input id="step" type="range" min="0" max="3" step="1" value="0">
+          <div class="ticks"><span>都保留</span><span>去第1段</span><span>再去第2段</span><span>再去第3段</span></div>
+          <div class="nav">
+            <button id="prev" type="button">上一步</button>
+            <button id="reset" type="button">重新开始</button>
+            <button id="next" class="primary" type="button">下一步</button>
+          </div>
+        </div>
+
+        <div class="readout" aria-live="polite">
+          <div id="equation" class="equation"></div>
+          <div id="meaning" class="meaning"></div>
+        </div>
+
+        <div id="quiz" class="quiz">
+          <p>想一想：53 − 41 = 12，这12年表示什么？</p>
+          <div class="choices">
+            <button type="button" data-answer="single">只是第四个“百星”的用时</button>
+            <button type="button" data-answer="three">第二、第三、第四个“百星”的用时合计</button>
+          </div>
+          <div id="feedback" class="feedback" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section class="explain">
+      <h2>为什么原来的12年不能直接作答？</h2>
+      <p class="problem">53年是四个“百星”的总用时。只减去第一个的41年后，第二、第三和第四个阶段都还留在总量里，所以12年是三段的合计。</p>
+      <div class="formula">完整关系：53 − 41 − 6 − 3 = 3（年）</div>
+      <p>可迁移的方法：<strong>总量 − 其他所有已知部分 = 目标部分</strong>。每做一次减法，都要说清楚“拿走了谁、还剩下谁”。</p>
+      <p class="source">这是基于家长批准的完整讲解版本；本次互动记录属于“在提示下完成应用”，不标记为独立掌握。</p>
+    </section>
+  </main>
+
+  <script>
+    const cv = document.getElementById('c');
+    const ctx = cv.getContext('2d');
+    const slider = document.getElementById('step');
+    const stepVal = document.getElementById('step-val');
+    const equation = document.getElementById('equation');
+    const meaning = document.getElementById('meaning');
+    const quiz = document.getElementById('quiz');
+    const feedback = document.getElementById('feedback');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const reset = document.getElementById('reset');
+
+    const params = { step: 0 };
+    const stages = [
+      { name: '第1个', value: 41, color: '#b794f6' },
+      { name: '第2个', value: 6, color: '#5b9cff' },
+      { name: '第3个', value: 3, color: '#2dd4bf' },
+      { name: '第4个', value: 3, color: '#ffd166' }
+    ];
+    const states = [
+      { eq: '总计 53 年', text: '四个阶段都在总量里。', remain: 53 },
+      { eq: '53 − 41 = 12（年）', text: '拿走第1段后，还剩第2、第3、第4段的合计。', remain: 12 },
+      { eq: '12 − 6 = 6（年）', text: '再拿走第2段后，还剩第3段和第4段。', remain: 6 },
+      { eq: '6 − 3 = 3（年）', text: '再拿走第3段后，才只剩第4段。', remain: 3 }
+    ];
+
+    function roundRect(x, y, w, h, r) {
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
+    }
+
+    function draw() {
+      const w = cv.clientWidth;
+      const h = cv.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#0b1b3c');
+      grad.addColorStop(1, '#081329');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#aab8d6';
+      ctx.font = `600 ${Math.max(13, w * 0.028)}px "PingFang SC", sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText('总计53年，由四个阶段合起来', 22, 34);
+
+      const gap = Math.max(7, w * 0.016);
+      const cardW = (w - 44 - gap * 3) / 4;
+      const cardH = Math.min(112, h * 0.35);
+      const y = Math.max(55, h * 0.18);
+
+      stages.forEach((stage, i) => {
+        const x = 22 + i * (cardW + gap);
+        const removed = i < params.step;
+        ctx.save();
+        ctx.globalAlpha = removed ? 0.18 : 1;
+        roundRect(x, y, cardW, cardH, 12);
+        ctx.fillStyle = stage.color + '22';
+        ctx.fill();
+        ctx.strokeStyle = stage.color;
+        ctx.lineWidth = removed ? 2 : 3;
+        ctx.stroke();
+
+        ctx.fillStyle = removed ? '#7585a6' : '#f5f7ff';
+        ctx.textAlign = 'center';
+        ctx.font = `600 ${Math.max(12, w * 0.025)}px "PingFang SC", sans-serif`;
+        ctx.fillText(stage.name, x + cardW / 2, y + cardH * 0.38);
+        ctx.font = `800 ${Math.max(16, w * 0.035)}px "PingFang SC", sans-serif`;
+        const revealFourth = params.step === 3;
+        const label = i === 3 && !revealFourth ? '？年' : `${stage.value}年`;
+        ctx.fillStyle = removed ? '#7585a6' : stage.color;
+        ctx.fillText(label, x + cardW / 2, y + cardH * 0.70);
+        ctx.restore();
+
+        if (removed) {
+          ctx.strokeStyle = '#ff7a5c';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(x + 12, y + 12);
+          ctx.lineTo(x + cardW - 12, y + cardH - 12);
+          ctx.stroke();
+        }
+      });
+
+      const current = states[params.step];
+      const pillW = Math.min(310, w - 44);
+      const pillH = 58;
+      const pillX = (w - pillW) / 2;
+      const pillY = y + cardH + Math.max(28, h * 0.08);
+      roundRect(pillX, pillY, pillW, pillH, 14);
+      ctx.fillStyle = '#142747';
+      ctx.fill();
+      ctx.strokeStyle = params.step === 3 ? '#3ddc97' : '#ffd166';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = params.step === 3 ? '#3ddc97' : '#ffd166';
+      ctx.textAlign = 'center';
+      ctx.font = `800 ${Math.max(17, w * 0.037)}px "PingFang SC", sans-serif`;
+      ctx.fillText(`当前剩余：${current.remain}年`, w / 2, pillY + 37);
+    }
+
+    function update() {
+      params.step = Number(slider.value);
+      stepVal.textContent = String(params.step);
+      const current = states[params.step];
+      equation.textContent = current.eq;
+      meaning.textContent = current.text;
+      prev.disabled = params.step === 0;
+      next.disabled = params.step === 3;
+      quiz.classList.toggle('show', params.step === 1);
+      if (params.step !== 1) {
+        feedback.textContent = '';
+        feedback.className = 'feedback';
+      }
+      draw();
+    }
+
+    function bindSlider(id, key) {
+      const el = document.getElementById(id);
+      el.addEventListener('input', () => {
+        params[key] = Number(el.value);
+        update();
+      });
+    }
+
+    document.querySelectorAll('[data-answer]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.dataset.answer === 'three') {
+          feedback.textContent = '对。12年里还有三个阶段，所以还不能停。';
+          feedback.className = 'feedback ok';
+        } else {
+          feedback.textContent = '再看卡片：只划掉第1段后，还有几张卡片亮着？';
+          feedback.className = 'feedback try';
+        }
+      });
+    });
+
+    prev.addEventListener('click', () => { slider.value = String(Math.max(0, params.step - 1)); update(); });
+    next.addEventListener('click', () => { slider.value = String(Math.min(3, params.step + 1)); update(); });
+    reset.addEventListener('click', () => { slider.value = '0'; update(); });
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = cv.getBoundingClientRect();
+      cv.width = Math.round(rect.width * dpr);
+      cv.height = Math.round(rect.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('load', () => {
+      bindSlider('step', 'step');
+      resize();
+      update();
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ]
+        });
+      }
+    });
+  </script>
+</body>
+</html>

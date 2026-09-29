@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>混合运算大冒险 · 四年级上册第一单元</title>
+<style>
+:root{
+  --bg:#FFF6EA; --card:#FFFFFF; --ink:#3D2C1E; --ink-soft:#8A7360;
+  --orange:#E8853D; --orange-soft:#FDEBD7; --orange-deep:#B95F1B;
+  --blue:#5B8DC9; --blue-soft:#E8F1FA; --blue-deep:#2F5B8F;
+  --green:#4CAF6D; --green-soft:#E3F4E9; --green-deep:#2C7A48;
+  --red:#E05B4B; --red-soft:#FDECEA;
+  --radius-lg:24px; --radius-md:16px;
+  --shadow:0 4px 16px rgba(120,80,30,.10);
+  --bounce:cubic-bezier(.34,1.56,.64,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:"Yuanti SC","YouYuan","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--ink); min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
+  text-wrap:pretty;
+}
+/* ---------- 顶栏 ---------- */
+.topbar{
+  width:100%; max-width:880px; padding:20px 24px 8px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.game-title{font-size:clamp(22px,4vw,30px); font-weight:700; letter-spacing:1px}
+.game-title small{display:block; font-size:13px; color:var(--ink-soft); font-weight:400; margin-top:2px}
+.star-bank{
+  background:var(--card); border-radius:999px; padding:8px 16px;
+  box-shadow:var(--shadow); font-size:18px; color:var(--orange-deep); font-weight:700; white-space:nowrap;
+}
+/* ---------- 屏幕切换 ---------- */
+.screen{display:none; width:100%; max-width:880px; padding:16px 24px 48px; flex:1}
+.screen.active{display:block; animation:pop .35s var(--bounce)}
+@keyframes pop{from{opacity:0; transform:translateY(14px) scale(.98)} to{opacity:1; transform:none}}
+/* ---------- 主页关卡卡 ---------- */
+.hero{
+  background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow);
+  padding:24px 28px; margin-bottom:20px;
+}
+.hero h1{font-size:clamp(20px,3.4vw,26px); margin-bottom:6px}
+.hero p{color:var(--ink-soft); font-size:15px; line-height:1.7}
+.level-list{display:grid; gap:16px}
+.level-card{
+  display:flex; align-items:center; gap:18px; text-align:left;
+  background:var(--card); border:none; border-radius:var(--radius-lg); box-shadow:var(--shadow);
+  padding:20px 22px; cursor:pointer; font-family:inherit;
+  transition:transform .18s var(--bounce), box-shadow .18s;
+}
+.level-card:hover{transform:translateY(-3px); box-shadow:0 10px 24px rgba(120,80,30,.16)}
+.level-card:active{transform:scale(.98)}
+.level-badge{
+  width:60px; height:60px; border-radius:20px; flex:none;
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; font-weight:700; color:#fff;
+}
+.level-card:nth-child(1) .level-badge{background:var(--orange)}
+.level-card:nth-child(2) .level-badge{background:var(--blue)}
+.level-card:nth-child(3) .level-badge{background:var(--green)}
+.level-info{flex:1; min-width:0}
+.level-info b{font-size:19px; display:block}
+.level-info span{font-size:14px; color:var(--ink-soft); display:block; margin-top:3px; line-height:1.5}
+.level-stars{font-size:18px; color:var(--orange); white-space:nowrap}
+.level-stars .off{color:#E5D9C8}
+/* ---------- 游戏页 ---------- */
+.level-banner{
+  display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;
+}
+.level-tag{border-radius:999px; color:#fff; font-size:14px; padding:6px 14px; font-weight:700}
+.level-tag.l1{background:var(--orange)} .level-tag.l2{background:var(--blue)} .level-tag.l3{background:var(--green)}
+.round-progress{font-size:14px; color:var(--ink-soft)}
+.btn-ghost{
+  margin-left:auto; background:none; border:2px solid #EADBC6; color:var(--ink-soft);
+  border-radius:999px; padding:7px 16px; font-size:14px; font-family:inherit; cursor:pointer;
+  transition:all .15s;
+}
+.btn-ghost:hover{border-color:var(--orange); color:var(--orange-deep)}
+.scene-card{
+  background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow);
+  padding:24px 26px; margin-bottom:18px;
+}
+.scene-card .scene{font-size:15px; color:var(--ink-soft); line-height:1.7; margin-bottom:14px}
+.scene-card .ask{font-size:clamp(19px,3vw,23px); font-weight:700; line-height:1.5}
+.steps-preview{background:var(--orange-soft); border-radius:var(--radius-md); padding:14px 18px; margin-top:14px; font-size:15px; line-height:1.9}
+.steps-preview b{color:var(--orange-deep)}
+/* 表达式令牌 */
+.expr{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px; padding:26px 8px}
+.token{
+  min-width:58px; height:58px; padding:0 14px; border-radius:18px; border:none;
+  background:var(--blue-soft); color:var(--blue-deep); font-size:26px; font-weight:700;
+  font-family:inherit; cursor:pointer; box-shadow:0 3px 0 #C9DCF0;
+  transition:transform .15s var(--bounce), background .15s;
+}
+.token:hover{transform:translateY(-3px); background:#D6E7F7}
+.token:active{transform:scale(.94)}
+.op{font-size:28px; font-weight:700; color:var(--ink-soft); padding:0 2px}
+.token.hit{background:var(--green); color:#fff; box-shadow:0 3px 0 #3A8A56; animation:hitpulse .5s var(--bounce)}
+@keyframes hitpulse{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.token.miss{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+/* 选项卡 */
+.option-list{display:grid; gap:12px; margin-top:6px}
+.option-card{
+  background:var(--card); border:3px solid transparent; border-radius:var(--radius-md);
+  box-shadow:var(--shadow); padding:18px 20px; font-size:clamp(17px,2.6vw,21px); font-weight:700;
+  font-family:inherit; cursor:pointer; text-align:center; letter-spacing:1px;
+  transition:transform .15s var(--bounce), border-color .15s;
+}
+.option-card:hover{transform:translateY(-2px); border-color:var(--blue)}
+.option-card:active{transform:scale(.98)}
+.option-card.right{border-color:var(--green); background:var(--green-soft)}
+.option-card.wrong{border-color:var(--red); background:var(--red-soft); animation:shake .4s}
+/* 排序卡（第3关） */
+.order-list{display:grid; gap:12px; margin-top:6px}
+.order-card{
+  display:flex; align-items:center; gap:14px;
+  background:var(--card); border:3px solid transparent; border-radius:var(--radius-md);
+  box-shadow:var(--shadow); padding:16px 18px; font-size:clamp(16px,2.4vw,19px); font-weight:600;
+  font-family:inherit; cursor:pointer; text-align:left; line-height:1.5;
+  transition:transform .15s var(--bounce), border-color .15s, opacity .2s;
+}
+.order-card:hover{transform:translateY(-2px); border-color:var(--green)}
+.order-card.picked{border-color:var(--green); background:var(--green-soft); cursor:default}
+.order-card.wrong{border-color:var(--red); background:var(--red-soft); animation:shake .4s}
+.order-num{
+  width:34px; height:34px; border-radius:50%; background:#F0E6D6; color:var(--ink-soft);
+  display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; flex:none;
+}
+.order-card.picked .order-num{background:var(--green); color:#fff}
+/* 反馈与按钮 */
+.feedback{
+  min-height:58px; border-radius:var(--radius-md); padding:14px 18px; margin-top:16px;
+  font-size:16px; line-height:1.7; display:none;
+}
+.feedback.show{display:block; animation:pop .3s var(--bounce)}
+.feedback.ok{background:var(--green-soft); color:var(--green-deep)}
+.feedback.no{background:var(--red-soft); color:#A33B2E}
+.btn-row{display:flex; justify-content:center; gap:14px; margin-top:20px}
+.btn-main{
+  background:var(--orange); color:#fff; border:none; border-radius:999px;
+  padding:14px 42px; font-size:18px; font-weight:700; font-family:inherit; cursor:pointer;
+  box-shadow:0 4px 0 var(--orange-deep); transition:transform .15s var(--bounce), box-shadow .15s;
+}
+.btn-main:hover{transform:translateY(-2px)}
+.btn-main:active{transform:translateY(2px); box-shadow:0 1px 0 var(--orange-deep)}
+.btn-main.blue{background:var(--blue); box-shadow:0 4px 0 var(--blue-deep)}
+.btn-main.green{background:var(--green); box-shadow:0 4px 0 var(--green-deep)}
+/* 知识卡弹层 */
+.modal-mask{
+  position:fixed; inset:0; background:rgba(61,44,30,.45); display:none;
+  align-items:center; justify-content:center; padding:24px; z-index:40;
+}
+.modal-mask.show{display:flex}
+.modal{
+  background:var(--card); border-radius:var(--radius-lg); max-width:520px; width:100%;
+  padding:32px 30px; box-shadow:0 20px 60px rgba(61,44,30,.3);
+  animation:pop .35s var(--bounce); text-align:center;
+}
+.modal .kicker{font-size:14px; color:var(--ink-soft); letter-spacing:2px}
+.modal h2{font-size:23px; margin:8px 0 14px}
+.modal .rule-box{background:var(--blue-soft); border-radius:var(--radius-md); padding:16px 18px; font-size:16px; line-height:1.9; text-align:left; margin-bottom:8px}
+.modal .rule-box b{color:var(--blue-deep)}
+.modal .stars-line{font-size:30px; color:var(--orange); margin:10px 0}
+.modal .stars-line .off{color:#E5D9C8}
+/* 通关 */
+.medal{
+  width:150px; height:150px; border-radius:50%; margin:10px auto 18px;
+  background:radial-gradient(circle at 32% 30%, #FFD98A, var(--orange) 68%);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 30px rgba(232,133,61,.4), inset 0 -6px 14px rgba(185,95,27,.5);
+  animation:medalspin 1.2s var(--bounce);
+}
+.medal span{font-size:64px; color:#fff; text-shadow:0 3px 6px rgba(185,95,27,.6)}
+@keyframes medalspin{from{transform:scale(0) rotate(-360deg)} to{transform:scale(1) rotate(0)}}
+.win-card{text-align:center; padding:36px 28px}
+.win-card h1{font-size:clamp(24px,4.5vw,32px); margin-bottom:8px}
+.win-card p{color:var(--ink-soft); font-size:16px; line-height:1.8; margin-bottom:6px}
+.confetti{position:fixed; top:-12px; width:10px; height:16px; z-index:50; border-radius:3px; pointer-events:none; animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.footer-note{width:100%; max-width:880px; padding:0 24px 28px; text-align:center; font-size:13px; color:#B9A58D}
+@media (max-width:560px){
+  .token{min-width:48px; height:48px; font-size:21px}
+  .op{font-size:22px}
+  .level-badge{width:50px; height:50px; font-size:21px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="game-title">混合运算大冒险<small>四年级上册 · 第一单元《志愿者在行动》配套游戏</small></div>
+  <div class="star-bank">★ <span id="starTotal">0</span></div>
+</header>
+
+<!-- 主页 -->
+<section class="screen active" id="screenHome">
+  <div class="hero">
+    <h1>小志愿者，出发！</h1>
+    <p>三个关卡对应三个信息窗：先学会运算顺序，再学会用括号“打包”，最后当小侦探分析数量关系。每关全对可以拿 3 颗星，集齐星星就能获得“混合运算小达人”勋章！</p>
+  </div>
+  <div class="level-list" id="levelList"></div>
+</section>
+
+<!-- 游戏页 -->
+<section class="screen" id="screenGame">
+  <div class="level-banner">
+    <span class="level-tag" id="levelTag"></span>
+    <span class="round-progress" id="roundProgress"></span>
+    <button class="btn-ghost" onclick="goHome()">返回主页</button>
+  </div>
+  <div class="scene-card">
+    <div class="scene" id="sceneText"></div>
+    <div class="ask" id="askText"></div>
+    <div class="steps-preview" id="stepsPreview" style="display:none"></div>
+    <div id="playArea"></div>
+    <div class="feedback" id="feedbackBox"></div>
+    <div class="btn-row" id="btnRow"></div>
+  </div>
+</section>
+
+<!-- 通关页 -->
+<section class="screen" id="screenWin">
+  <div class="scene-card win-card">
+    <div class="medal"><span>★</span></div>
+    <h1>恭喜获得“混合运算小达人”勋章！</h1>
+    <p id="winSummary"></p>
+    <p>你已经掌握了：没有括号时先乘除后加减、用小括号打包先算的部分、从条件或问题入手找中间量。</p>
+    <div class="btn-row"><button class="btn-main" onclick="restartAll()">再玩一次</button></div>
+  </div>
+</section>
+
+<!-- 知识卡弹层 -->
+<div class="modal-mask" id="modalMask">
+  <div class="modal">
+    <div class="kicker" id="modalKicker"></div>
+    <h2 id="modalTitle"></h2>
+    <div class="stars-line" id="modalStars"></div>
+    <div class="rule-box" id="modalRule"></div>
+    <div class="btn-row"><button class="btn-main" id="modalBtn">继续</button></div>
+  </div>
+</div>
+
+<div class="footer-note">配套青岛版五四制四年级上册第一单元信息窗 1—3 · 题目数据均取自教材情境</div>
+
+<script>
+/* ================= 数据：知识内容 ================= */
+const LEVELS = [
+  { id:1, cls:"l1", name:"运算顺序小快手", sub:"不含括号的混合运算 · 点一点先算哪一步",
+    rule:"<b>没有括号的算式：</b>先算乘除，后算加减；乘除（或加减）连在一起时，从左往右算；互不依赖的乘法可以同时先算。" },
+  { id:2, cls:"l2", name:"括号打包员", sub:"含小括号的混合运算 · 选出正确的综合算式",
+    rule:"<b>小括号是“打包盒”：</b>要先算的部分就装进括号里。算式里有括号，先算括号里面的。" },
+  { id:3, cls:"l3", name:"分析小侦探", sub:"从条件或问题入手 · 找到中间量",
+    rule:"<b>解决多步问题：</b>从条件顺着推，或从问题倒着追，关键是先找到“中间量”——就是那些题目没直接给、需要先求出来的数量。" },
+];
+
+/* 第1关：点选先算的部分。groups 为可以先算的令牌区间 [起,止]（含） */
+const L1 = [
+  { scene:"买 40 本笔记本（每本 5 元）和 30 支钢笔（每支 8 元），一共多少元？",
+    expr:["5","×","40","+","8","×","30"], groups:[[0,2],[4,6]],
+    hint:"两个乘法互不依赖，可以同时先算！",
+    eval:"5×40=200，8×30=240，算式变成 200+240" },
+  { scene:"口算挑战", expr:["11","×","7","−","15","×","4"], groups:[[0,2],[4,6]],
+    hint:"两个乘法都先算，最后才相减。", eval:"11×7=77，15×4=60，算式变成 77−60" },
+  { scene:"小心陷阱！", expr:["150","+","120","÷","6","×","5"], groups:[[2,4]],
+    hint:"÷ 和 × 是同级，要从左往右：先算 120÷6，不是 6×5！",
+    eval:"120÷6=20，算式变成 150+20×5", trap:[4,6] },
+  { scene:"再接再厉", expr:["200","−","30","×","4","+","58"], groups:[[2,4]],
+    hint:"先算乘法 30×4。", eval:"30×4=120，算式变成 200−120+58" },
+  { scene:"最后一题，同级运算！", expr:["25","×","4","÷","20","+","36"], groups:[[0,2]],
+    hint:"× 和 ÷ 同级，从左往右先算 25×4。", eval:"25×4=100，算式变成 100÷20+36" },
+];
+
+/* 第2关：根据分步思路选综合算式 */
+const L2 = [
+  { scene:"王老师带 200 元，买 1 箱牛奶（58 元）和 4 袋大米（每袋 30 元），应找回多少元？",
+    steps:["先算花掉的钱：58+30×4=178（元）","再算找回：200−178=22（元）"],
+    options:["200 − 58 + 30 × 4","200 − (58 + 30 × 4)","(200 − 58) + 30 × 4"], answer:1,
+    notes:["这个算式从左往右会先算 200−58，变成“先找回钱再花钱”，不对哦。",
+           "对啦！(58+30×4) 把“花掉的钱”打包，先算括号里面。",
+           "这个先算 200−58，剩下的钱再买大米？不合题意。"] },
+  { scene:"1 桶花生油的价格是“1 袋面粉（34 元）与 1 千克鸡蛋（12 元）价格之和”的 2 倍。1 桶花生油多少元？",
+    steps:["先算面粉加鸡蛋：34+12=46（元）","再算 2 倍：46×2=92（元）"],
+    options:["34 + 12 × 2","(34 + 12) × 2","34 + (12 × 2)"], answer:1,
+    notes:["这个会先算 12×2，变成“面粉加两倍的鸡蛋”，不是“和的 2 倍”。",
+           "对啦！先把 34+12 打包求和，再乘 2。",
+           "12×2 不加括号也是先算，这个打包没有意义，算的不是题意。"] },
+  { scene:"树苗 24 捆、每捆 20 棵，已经栽了 300 棵，剩下的栽 6 行，平均每行栽多少棵？",
+    steps:["先算剩下的：20×24−300=180（棵）","再算每行：180÷6=30（棵）"],
+    options:["20 × 24 − 300 ÷ 6","(20 × 24 − 300) ÷ 6","20 × (24 − 300) ÷ 6"], answer:1,
+    notes:["这样会先算 300÷6，剩下的棵数就求错了。",
+           "对啦！先打包求出剩下的 180 棵，再除以 6。",
+           "24−300 不够减，而且“捆数”不能减“棵数”。"] },
+  { scene:"合唱组男生 24 人、女生 20 人，平均站成 4 行，每行多少人？",
+    steps:["先算总人数：24+20=44（人）","再算每行：44÷4=11（人）"],
+    options:["24 + 20 ÷ 4","(24 + 20) ÷ 4","24 ÷ 4 + 20"], answer:1,
+    notes:["这样只把女生平均分了，男生没有站队。",
+           "对啦！先把男生女生打包成总人数 44，再平均分。",
+           "这只平均了男生，女生没有算进去。"] },
+];
+
+/* 第3关：排序与倒追 */
+const L3 = [
+  { mode:"order", scene:"树苗问题：把解题步骤按先后顺序点出来。",
+    ask:"剩下的树苗平均每行栽多少棵？",
+    cards:[ {t:"求总棵数：20 × 24 = 480（棵）", ord:0},
+            {t:"求剩下的：480 − 300 = 180（棵）", ord:1},
+            {t:"求每行：180 ÷ 6 = 30（棵）", ord:2} ],
+    done:"从条件顺着推：总棵数 → 剩下的 → 每行的。每一步都靠上一步的结果！" },
+  { mode:"order", scene:"樱桃收入：前两步谁先谁后都行，最后一步一定在最后。",
+    ask:"大樱桃和小樱桃一共收入多少元？",
+    cards:[ {t:"大樱桃收入：750 × 20 = 15000（元）", ord:0},
+            {t:"小樱桃收入：720 × 12 = 8640（元）", ord:0},
+            {t:"求一共：15000 + 8640 = 23640（元）", ord:1} ],
+    done:"两个收入互不依赖，先求哪个都行——就像两个乘法可以同时先算！" },
+  { mode:"reverse", scene:"从问题倒着追：一层一层问“需要知道什么”。",
+    ask:"剩下的树苗平均每行栽多少棵？",
+    qs:[ {ask:"要求“每行栽多少棵”，需要知道哪两个量？",
+          options:["剩下的棵数 和 行数","总棵数 和 捆数","已栽棵数 和 行数"], answer:0,
+          note:"对！每行棵数 = 剩下的棵数 ÷ 行数。"},
+         {ask:"“剩下的棵数”题目没直接给，它又需要知道什么？",
+          options:["总棵数 和 已栽棵数","每捆棵数 和 行数","行数 和 已栽棵数"], answer:0,
+          note:"对！剩下的 = 总棵数 − 已栽棵数。"},
+         {ask:"“总棵数”又从哪里来？",
+          options:["每捆棵数 和 捆数","已栽棵数 和 行数","剩下的棵数"], answer:0,
+          note:"对！总棵数 = 每捆 20 棵 × 24 捆。追到已知条件，就追到底啦！"} ],
+    done:"从问题倒着追到条件，再从条件顺着算回去——这就是分析法！" },
+];
+
+/* ================= 状态 ================= */
+const state = { level:null, round:0, mistakes:0, best:{1:0,2:0,3:0}, sub:0, picked:[] };
+
+const $ = id => document.getElementById(id);
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo({top:0});
+}
+function starStr(n){
+  let s=""; for(let i=0;i<3;i++) s+= i<n ? "★" : '<span class="off">★</span>';
+  return s;
+}
+function totalStars(){ return state.best[1]+state.best[2]+state.best[3]; }
+
+/* ================= 主页 ================= */
+function goHome(){
+  state.level=null;
+  renderHome(); showScreen("screenHome");
+}
+function renderHome(){
+  $("starTotal").textContent = totalStars();
+  const list = $("levelList"); list.innerHTML="";
+  LEVELS.forEach(lv=>{
+    const btn=document.createElement("button");
+    btn.className="level-card";
+    btn.innerHTML=`<span class="level-badge">${lv.id}</span>
+      <span class="level-info"><b>${lv.name}</b><span>${lv.sub}</span></span>
+      <span class="level-stars">${starStr(state.best[lv.id])}</span>`;
+    btn.onclick=()=>startLevel(lv.id);
+    list.appendChild(btn);
+  });
+}
+
+/* ================= 关卡流程 ================= */
+function startLevel(id){
+  state.level=id; state.round=0; state.mistakes=0;
+  $("levelTag").textContent = "第"+id+"关 · "+LEVELS[id-1].name;
+  $("levelTag").className = "level-tag "+LEVELS[id-1].cls;
+  showScreen("screenGame");
+  renderRound();
+}
+function roundCount(){ return state.level===1 ? L1.length : state.level===2 ? L2.length : L3.length; }
+function setProgress(){
+  $("roundProgress").textContent = "第 "+(state.round+1)+" / "+roundCount()+" 题";
+}
+function feedback(msg, ok){
+  const f=$("feedbackBox");
+  f.className="feedback show "+(ok?"ok":"no");
+  f.innerHTML=msg;
+}
+function clearFeedback(){ $("feedbackBox").className="feedback"; $("feedbackBox").innerHTML=""; }
+function nextButton(text, cls){
+  const row=$("btnRow"); row.innerHTML="";
+  const b=document.createElement("button");
+  b.className="btn-main "+(cls||"");
+  b.textContent=text||"下一题";
+  b.onclick=()=>{
+    state.round++;
+    if(state.round>=roundCount()) levelComplete(); else renderRound();
+  };
+  row.appendChild(b);
+}
+
+function renderRound(){
+  clearFeedback(); $("btnRow").innerHTML=""; setProgress();
+  if(state.level===1) renderL1();
+  else if(state.level===2) renderL2();
+  else renderL3();
+}
+
+/* ---------- 第1关：点先算的部分 ---------- */
+function renderL1(){
+  const r=L1[state.round];
+  $("sceneText").textContent = r.scene;
+  $("askText").textContent = "第一步先算哪一部分？点一点数字";
+  $("stepsPreview").style.display="none";
+  const area=$("playArea");
+  area.innerHTML='<div class="expr" id="exprRow"></div>';
+  const row=$("exprRow");
+  r.expr.forEach((tk,i)=>{
+    if(/[×÷+−]/.test(tk)){
+      const s=document.createElement("span"); s.className="op"; s.textContent=tk; row.appendChild(s);
+    }else{
+      const b=document.createElement("button"); b.className="token"; b.textContent=tk;
+      b.onclick=()=>tapToken(i,b);
+      row.appendChild(b);
+    }
+  });
+}
+function tapToken(i,btn){
+  const r=L1[state.round];
+  const hit=r.groups.some(([a,b])=> i>=a && i<=b);
+  if(hit){
+    /* 高亮所有可先算的组 */
+    document.querySelectorAll("#exprRow .token").forEach(()=>{});
+    const tokens=[...document.querySelectorAll("#exprRow .token")];
+    /* token 索引重建：expr 中数字令牌按出现顺序对应 */
+    const numIdx=[]; r.expr.forEach((tk,i)=>{ if(!/[×÷+−]/.test(tk)) numIdx.push(i); });
+    tokens.forEach((t,j)=>{
+      const exprIdx=numIdx[j];
+      if(r.groups.some(([a,b])=> exprIdx>=a && exprIdx<=b)) t.classList.add("hit");
+      t.style.pointerEvents="none";
+    });
+    feedback("✓ 答对了！"+r.hint+"<br><b>"+r.eval+"</b>", true);
+    nextButton();
+  }else{
+    btn.classList.add("miss"); setTimeout(()=>btn.classList.remove("miss"),450);
+    state.mistakes++;
+    let msg="再想一想：加减先不算，乘除里也要看位置。";
+    if(r.trap && i>=r.trap[0] && i<=r.trap[1]) msg="掉进陷阱啦！÷ 和 × 是同级，要从左往右，不能挑顺眼的先算。";
+    feedback(msg, false);
+  }
+}
+
+/* ---------- 第2关：选综合算式 ---------- */
+function renderL2(){
+  const r=L2[state.round];
+  $("sceneText").textContent = r.scene;
+  $("askText").textContent = "哪个综合算式和分步思路一模一样？";
+  const sp=$("stepsPreview"); sp.style.display="block";
+  sp.innerHTML="<b>分步思路：</b><br>"+r.steps.join("<br>");
+  const area=$("playArea");
+  area.innerHTML='<div class="option-list" id="optList"></div>';
+  const list=$("optList");
+  /* 固定乱序（避免答案总在同一位置） */
+  const order=[0,1,2].sort(()=>Math.random()-.5);
+  order.forEach(oi=>{
+    const b=document.createElement("button");
+    b.className="option-card"; b.textContent=r.options[oi];
+    b.onclick=()=>{
+      const cards=[...list.children];
+      if(oi===r.answer){
+        b.classList.add("right");
+        cards.forEach(c=>c.style.pointerEvents="none");
+        feedback("✓ "+r.notes[oi], true);
+        nextButton();
+      }else{
+        b.classList.add("wrong"); b.style.pointerEvents="none";
+        state.mistakes++;
+        feedback("✗ "+r.notes[oi], false);
+      }
+    };
+    list.appendChild(b);
+  });
+}
+
+/* ---------- 第3关：排序 / 倒追 ---------- */
+function renderL3(){
+  const r=L3[state.round]; state.sub=0; state.picked=[];
+  $("sceneText").textContent=r.scene;
+  $("askText").textContent=r.ask;
+  $("stepsPreview").style.display="none";
+  if(r.mode==="order") renderOrder(r); else renderReverse(r);
+}
+function renderOrder(r){
+  const area=$("playArea");
+  area.innerHTML='<div class="order-list" id="ordList"></div>';
+  const list=$("ordList");
+  const order=r.cards.map((c,i)=>i).sort(()=>Math.random()-.5);
+  order.forEach(ci=>{
+    const c=r.cards[ci];
+    const b=document.createElement("button");
+    b.className="order-card";
+    b.innerHTML=`<span class="order-num"></span><span>${c.t}</span>`;
+    b.onclick=()=>{
+      if(b.classList.contains("picked")) return;
+      const remain=r.cards.filter(x=>!state.picked.includes(x));
+      const minOrd=Math.min(...remain.map(x=>x.ord));
+      if(c.ord===minOrd){
+        state.picked.push(c);
+        b.classList.add("picked");
+        b.querySelector(".order-num").textContent=state.picked.length;
+        if(state.picked.length===r.cards.length){
+          feedback("✓ 排对啦！"+r.done, true);
+          nextButton();
+        }
+      }else{
+        b.classList.add("wrong"); setTimeout(()=>b.classList.remove("wrong"),450);
+        state.mistakes++;
+        feedback("这一步还没到呢——它的“原料”还没有求出来。", false);
+      }
+    };
+    list.appendChild(b);
+  });
+}
+function renderReverse(r){
+  const q=r.qs[state.sub];
+  $("askText").textContent=q.ask;
+  const area=$("playArea");
+  area.innerHTML='<div class="option-list" id="revList"></div>';
+  const list=$("revList");
+  const order=q.options.map((o,i)=>i).sort(()=>Math.random()-.5);
+  order.forEach(oi=>{
+    const b=document.createElement("button");
+    b.className="option-card"; b.textContent=q.options[oi];
+    b.onclick=()=>{
+      if(oi===q.answer){
+        b.classList.add("right");
+        [...list.children].forEach(c=>c.style.pointerEvents="none");
+        if(state.sub<r.qs.length-1){
+          feedback("✓ "+q.note, true);
+          const row=$("btnRow"); row.innerHTML="";
+          const nb=document.createElement("button");
+          nb.className="btn-main green"; nb.textContent="继续追下去";
+          nb.onclick=()=>{ state.sub++; clearFeedback(); $("btnRow").innerHTML=""; renderReverse(r); };
+          row.appendChild(nb);
+        }else{
+          feedback("✓ "+q.note+"<br><b>"+r.done+"</b>", true);
+          nextButton("完成本关","green");
+        }
+      }else{
+        b.classList.add("wrong"); b.style.pointerEvents="none";
+        state.mistakes++;
+        feedback("✗ 这两个量求不出要追的中间量，再想想。", false);
+      }
+    };
+    list.appendChild(b);
+  });
+}
+
+/* ---------- 关卡结算 ---------- */
+function levelComplete(){
+  const lv=state.level;
+  const stars = state.mistakes===0 ? 3 : state.mistakes<=2 ? 2 : 1;
+  if(stars>state.best[lv]) state.best[lv]=stars;
+  $("starTotal").textContent=totalStars();
+  $("modalKicker").textContent="第"+lv+"关完成";
+  $("modalTitle").textContent=LEVELS[lv-1].name;
+  $("modalStars").innerHTML=starStr(stars);
+  $("modalRule").innerHTML="<b>知识卡：</b>"+LEVELS[lv-1].rule;
+  const done = state.best[1]>0 && state.best[2]>0 && state.best[3]>0;
+  $("modalBtn").textContent = done ? "领取勋章" : "返回主页";
+  $("modalBtn").onclick=()=>{
+    $("modalMask").classList.remove("show");
+    if(done){ showWin(); } else goHome();
+  };
+  $("modalMask").classList.add("show");
+}
+
+/* ---------- 通关 ---------- */
+function showWin(){
+  showScreen("screenWin");
+  $("winSummary").innerHTML="三关星星：第1关 "+state.best[1]+" 颗 · 第2关 "+state.best[2]+" 颗 · 第3关 "+state.best[3]+" 颗，共 "+totalStars()+" 颗！";
+  confetti();
+}
+function restartAll(){
+  state.best={1:0,2:0,3:0};
+  goHome();
+}
+function confetti(){
+  const colors=["#E8853D","#5B8DC9","#4CAF6D","#E05B4B","#F2C94C"];
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(1.8+Math.random()*1.6)+"s";
+    c.style.animationDelay=(Math.random()*0.8)+"s";
+    c.style.transform="rotate("+Math.random()*360+"deg)";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4200);
+  }
+}
+
+renderHome();
+</script>
+</body>
+</html>

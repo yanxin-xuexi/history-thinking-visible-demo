@@ -1,0 +1,148 @@
+{
+  "id": "parallel-perpendicular-diagnostic-lesson",
+  "revision": "1.0.0-public",
+  "title": "平行与垂直：先延长，再看角",
+  "media": "lesson.mp4",
+  "duration": 155.8,
+  "problem": "本课练习六个关于平行与垂直的问题：短线未相交时怎样判断；不平行是否必然垂直；如何使用平行与垂直术语和符号；正方形相邻边与对边的关系；在字母中辨认线段关系；怎样用角度证明垂直。画面中的图形为课件重绘。",
+  "checkpoints": [
+    {
+      "id": "q-extend",
+      "problem_id": "parallel-perpendicular-question-1",
+      "kind": "reasoning",
+      "at": 4.2,
+      "exposure": "before_explanation",
+      "prompt": "两条短线现在没有碰到，能直接说它们互相平行吗？",
+      "options": [
+        "能，只要现在没碰到就是平行",
+        "不能，要先把它们延长再判断",
+        "能，只要看起来方向差不多"
+      ],
+      "answer": 1,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "你没有只看眼前这一小截。接着看延长以后会发生什么。",
+        "wrong": [
+          "直线可以向两端无限延长；现在没碰到，不代表以后也不相交。",
+          "",
+          "方向看起来接近不够，需要判断延长后是否相交。"
+        ]
+      }
+    },
+    {
+      "id": "q-nonparallel",
+      "problem_id": "parallel-perpendicular-question-2",
+      "kind": "reasoning",
+      "at": 41.864,
+      "exposure": "before_explanation",
+      "prompt": "同一平面内两条直线不平行，就一定互相垂直吗？",
+      "options": [
+        "一定垂直",
+        "不一定，也可能普通相交",
+        "一定不相交"
+      ],
+      "answer": 1,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "对。不平行只能说明会相交，还要继续检查是不是直角。",
+        "wrong": [
+          "相交也可能形成斜角；只有相交成直角才垂直。",
+          "",
+          "不平行恰恰意味着延长后会相交。"
+        ]
+      }
+    },
+    {
+      "id": "q-notation",
+      "problem_id": "parallel-perpendicular-question-3",
+      "kind": "practice",
+      "at": 75.852,
+      "exposure": "after_notation_explanation",
+      "prompt": "直线 x 与直线 y 互相垂直，正确写法是哪一个？",
+      "options": [
+        "x∥y",
+        "x⊥y",
+        "x＝y"
+      ],
+      "answer": 1,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "⊥ 像一个直角，用来表示互相垂直。",
+        "wrong": [
+          "∥ 是平行符号；垂直要找像直角的符号。",
+          "",
+          "等号表示相等，不表示两条直线的位置关系。"
+        ]
+      }
+    },
+    {
+      "id": "q-square",
+      "problem_id": "parallel-perpendicular-question-4",
+      "kind": "reasoning",
+      "at": 82.352,
+      "exposure": "before_explanation",
+      "prompt": "正方形相邻的两条边是什么关系？",
+      "options": [
+        "互相平行",
+        "互相垂直",
+        "既不平行也不垂直"
+      ],
+      "answer": 1,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "相邻边相交成直角，所以互相垂直。继续看对边和分类题。",
+        "wrong": [
+          "平行的是两组对边；相邻边会在顶点相交。",
+          "",
+          "正方形的角是直角，相邻边因此互相垂直。"
+        ]
+      }
+    },
+    {
+      "id": "q-angle",
+      "problem_id": "parallel-perpendicular-question-5",
+      "kind": "reasoning",
+      "at": 107.72,
+      "exposure": "before_explanation",
+      "prompt": "要证明 b 与 c 互相垂直，下面哪条理由最可靠？",
+      "options": [
+        "图上看起来像垂直",
+        "因为交点可以叫垂足",
+        "先算出 b 与 c 所成的角是90°"
+      ],
+      "answer": 2,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "先得到90°这个证据，才能判断垂直，再把交点叫作垂足。",
+        "wrong": [
+          "图形只是示意，可靠理由要来自角度关系。",
+          "“垂足”是确认垂直后的名称，不能拿它反过来证明垂直。",
+          ""
+        ]
+      }
+    },
+    {
+      "id": "q-transfer",
+      "problem_id": "parallel-perpendicular-question-6",
+      "kind": "transfer",
+      "at": 134.912,
+      "exposure": "before_transfer_explanation",
+      "prompt": "新图中的两条直线延长后会相交，但交成的不是直角。应该怎样判断？",
+      "options": [
+        "互相平行",
+        "互相垂直",
+        "普通相交，不互相垂直"
+      ],
+      "answer": 2,
+      "maxAttempts": 2,
+      "feedback": {
+        "correct": "你按“先相交、再看角”的顺序判断了。这是一次近迁移，还需要结合独立改错继续验证。",
+        "wrong": [
+          "延长后已经相交，所以不能叫平行。",
+          "相交但不是直角，不能叫垂直。",
+          ""
+        ]
+      }
+    }
+  ]
+}

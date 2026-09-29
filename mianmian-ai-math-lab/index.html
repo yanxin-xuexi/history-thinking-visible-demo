@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff7ec">
+  <title>绵绵和 AI 的数学实验室</title>
+  <style>
+    :root { color-scheme: light; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; color: #342b25; background: #fff7ec; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1080px; margin: auto; padding: 42px 22px 80px; }
+    .eyebrow { display: inline-block; padding: 8px 13px; border-radius: 999px; background: #ffdfbd; color: #8c4d20; font-size: 13px; font-weight: 700; letter-spacing: .08em; }
+    h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.13; letter-spacing: -.05em; margin: 24px 0 18px; }
+    .intro { max-width: 680px; font-size: clamp(17px, 2vw, 20px); line-height: 1.8; color: #66594d; }
+    .rule { width: 58px; height: 5px; border-radius: 4px; background: #ef874e; margin: 34px 0; }
+    h2 { font-size: 25px; margin: 0 0 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; }
+    a.card { display: flex; flex-direction: column; min-height: 245px; padding: 25px; border: 1px solid #ead9c7; border-radius: 24px; background: #fffdfa; color: inherit; text-decoration: none; box-shadow: 0 8px 26px #6a3f1e0d; transition: transform .18s ease, box-shadow .18s ease; }
+    a.card:hover, a.card:focus-visible { transform: translateY(-4px); box-shadow: 0 16px 32px #6a3f1e17; outline: 2px solid #e5864a; outline-offset: 2px; }
+    .tag { font-size: 13px; font-weight: 700; color: #bb642d; }
+    h3 { font-size: 22px; line-height: 1.35; margin: 15px 0 10px; }
+    .card p { font-size: 15px; line-height: 1.65; color: #6b5d50; margin: 0; }
+    .enter { margin-top: auto; padding-top: 22px; font-weight: 700; color: #a84d23; }
+    footer { border-top: 1px solid #ead9c7; margin-top: 45px; padding-top: 18px; color: #7b6e63; font-size: 14px; line-height: 1.7; }
+    @media (prefers-reduced-motion: reduce) { a.card { transition: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="eyebrow">边看 · 边想 · 边尝试</span>
+    <h1>绵绵和 AI 的<br>数学实验室</h1>
+    <p class="intro">这些小课件从数学问题和人机互动出发制作。你可以看动画、暂停思考、动手试一试；它们是学习探索的作品，不是学生已经掌握知识的证明。</p>
+    <div class="rule" aria-hidden="true"></div>
+    <section aria-labelledby="lessons-title">
+      <h2 id="lessons-title">来选一节试试</h2>
+      <div class="grid">
+        <a class="card" href="lessons/mixed-operations.html"><span class="tag">游戏 · 混合运算</span><h3>混合运算大冒险</h3><p>在闯关中判断先算什么、后算什么。</p><span class="enter">开始闯关 →</span></a>
+        <a class="card" href="lessons/satellites/"><span class="tag">动画 · 多步计算</span><h3>第四个“百星”用了多少年？</h3><p>跟着时间轴，拆开一个多步问题。</p><span class="enter">进入课件 →</span></a>
+        <a class="card" href="lessons/flashlight/"><span class="tag">交互视频 · 数量关系</span><h3>防水手电筒：算出的钱属于谁？</h3><p>视频会在关键处暂停，先想再选。</p><span class="enter">进入课件 →</span></a>
+        <a class="card" href="lessons/parallel-perpendicular/"><span class="tag">交互视频 · 图形与几何</span><h3>平行与垂直：先延长，再看角</h3><p>观察、判断、再换一张图试试。</p><span class="enter">进入课件 →</span></a>
+      </div>
+    </section>
+    <footer>页面不会自动收集或上传作答。交互视频中的学习记录只有主动导出才会保存在使用者自己的设备上；课件反馈不能替代教师或家长的判断。</footer>
+  </main>
+</body>
+</html>
