@@ -1,0 +1,10 @@
+.context-carry{font-family:inherit;font-size:18px;line-height:1.7;margin:4px 0 16px;padding:10px 14px;border-left:3px solid var(--green);background:#e8eee6}
+.context-carry blockquote{font-family:inherit;font-size:18px;line-height:1.6}
+.context-carry .source-label{margin-bottom:5px}
+@media(max-height:570px){.context-carry{font-size:16px;margin-bottom:8px;padding:6px 10px}.context-carry blockquote{font-size:16px}}
+@media(max-width:600px) and (max-height:570px){
+ #lesson[data-scene="main.h18.attitude"] .context-carry{font-size:15px;line-height:1.4;margin:2px 0 6px;padding:5px 10px}
+ #lesson[data-scene="main.h18.attitude"] .pair{padding:5px 0}
+ #lesson[data-scene="main.h18.attitude"] .pair blockquote{font-size:21px;line-height:1.4;margin:5px 0}
+ #lesson[data-scene="main.h18.attitude"] .note{font-size:12px;line-height:1.5;margin:6px 0}
+}
