@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>沙龙与月光社 · 思维显影路线小样</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="full.css"><script defer src="lesson.js"></script><script defer src="player.js"></script></head>
+<body><div id="lesson">
+<header><div class="brand">法英对比 <span>19题 · 思维显影小样</span></div><nav aria-label="阅读工具"><button id="sound" aria-label="播放或暂停讲解">播放</button><button id="original">原题</button><button id="voice" aria-pressed="true">字幕</button><button id="fullscreen">全屏</button></nav></header>
+<div class="progress" aria-label="课程进度"><span id="chapter"></span><span id="step"></span><div id="track"><i></i></div></div>
+<main><div class="heading"><p id="eyebrow"></p><h1 id="title" tabindex="-1"></h1></div><section id="board" aria-label="材料与板书" tabindex="0"></section></main>
+<section id="interaction" aria-label="作答与反馈"></section>
+<aside id="narration" aria-label="本步讲解字幕"><span id="audio-status">待播放</span><p></p></aside>
+<footer><button id="back" class="quiet">← 上一步</button><div id="actions"></div></footer>
+<dialog id="dialog"><div class="dialog-head"><h2 id="dialog-title"></h2><button id="close-dialog" aria-label="关闭弹窗">关闭</button></div><div id="dialog-body"></div></dialog>
+<p id="announcement" class="sr-only" role="status"></p>
+<audio id="speech" preload="none"></audio>
+</div></body></html>
